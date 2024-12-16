@@ -1,0 +1,27 @@
+# Build e Publicação
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.log
+
+# Arquivos gerados pelo Visual Studio
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Logs e temporários
+*.log
+*.tmp
+*.cache
+
+# Configuração do sistema
+*.db
+*.db-shm
+*.db-wal
+appsettings*.json.local
+secrets.json
