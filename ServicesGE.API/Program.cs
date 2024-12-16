@@ -15,9 +15,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v2", new OpenApiInfo
+    c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Version = "v2",
+        Version = "v1",
         Title = "ServicesGE.API",
         Description = "API para o projeto Eletronico",
         Contact = new OpenApiContact
