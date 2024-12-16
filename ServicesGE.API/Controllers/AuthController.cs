@@ -4,6 +4,7 @@ using ServicesGE.API.Services;
 using Microsoft.EntityFrameworkCore;
 using BCrypt.Net;
 using ServicesGE.API.Data;
+using ServicesGE.API.DTOs;
 
 namespace ServicesGE.API.Controllers
 {
@@ -34,16 +35,29 @@ namespace ServicesGE.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] Usuario loginRequest)
+        public async Task<IActionResult> Login([FromBody] UsuarioLoginDTO loginRequest)
         {
-            var usuario = await _context.usuarios
-                .FirstOrDefaultAsync(u => u.email == loginRequest.email);
+            if (string.IsNullOrWhiteSpace(loginRequest.Email) || string.IsNullOrWhiteSpace(loginRequest.Senha))
+            {
+                return BadRequest("Email e senha são obrigatórios.");
+            }
 
-            if (usuario == null || !BCrypt.Net.BCrypt.Verify(loginRequest.senha_hash, usuario.senha_hash))
+            var usuario = await _context.usuarios
+                .FirstOrDefaultAsync(u => u.email == loginRequest.Email);
+
+            if (usuario == null || !BCrypt.Net.BCrypt.Verify(loginRequest.Senha, usuario.senha_hash))
+            {
                 return Unauthorized("Email ou senha inválidos.");
+            }
 
             var token = TokenService.GenerateToken(usuario.nome, usuario.permissao, _configuration);
-            return Ok(new { Token = token });
+
+            return Ok(new
+            {
+                Message = "Login realizado com sucesso.",
+                Token = token
+            });
         }
+
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -86,6 +87,9 @@ namespace ServicesGE.API.Controllers
 
         // DELETE: api/Usuario/5
         [HttpDelete("del{id}")]
+
+        [Authorize(Roles = "Admin")] // Ambos podem acessar
+
         public async Task<IActionResult> DeleteUsuario(int id)
         {
             var usuario = await _context.usuarios.FindAsync(id);
