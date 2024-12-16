@@ -29,7 +29,7 @@ namespace ServicesGE.API.Controllers
         }
 
         // GET: api/Usuario/5
-        [HttpGet("{id}")]
+        [HttpGet("GetBy{id}")]
         public async Task<ActionResult<Usuario>> GetUsuario(int id)
         {
             var usuario = await _context.usuarios.FindAsync(id);
@@ -44,7 +44,7 @@ namespace ServicesGE.API.Controllers
 
         // PUT: api/Usuario/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("edit{id}")]
         public async Task<IActionResult> PutUsuario(int id, Usuario usuario)
         {
             if (id != usuario.usuarioId)
@@ -75,7 +75,7 @@ namespace ServicesGE.API.Controllers
 
         // POST: api/Usuario
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("Add")]
         public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
         {
             _context.usuarios.Add(usuario);
@@ -85,7 +85,7 @@ namespace ServicesGE.API.Controllers
         }
 
         // DELETE: api/Usuario/5
-        [HttpDelete("{id}")]
+        [HttpDelete("del{id}")]
         public async Task<IActionResult> DeleteUsuario(int id)
         {
             var usuario = await _context.usuarios.FindAsync(id);
