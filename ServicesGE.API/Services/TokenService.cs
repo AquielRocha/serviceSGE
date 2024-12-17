@@ -7,7 +7,7 @@ namespace ServicesGE.API.Services
 {
     public static class TokenService
     {
-        public static string GenerateToken(string userName, string userRole, IConfiguration configuration)
+        public static string GenerateToken(string userName, string userRole, string userEmail, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
             var key = Encoding.ASCII.GetBytes(jwtSettings["SecretKey"]);
@@ -15,8 +15,9 @@ namespace ServicesGE.API.Services
             var tokenHandler = new JwtSecurityTokenHandler();
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, userName),
-                new Claim(ClaimTypes.Role, userRole)
+                new Claim(ClaimTypes.Name, userEmail), // Define o email como o Claim 'Name'
+                new Claim(ClaimTypes.Role, userRole),
+                new Claim("userName", userName) // Adiciona o nome como um Claim adicional
             };
 
             var tokenDescriptor = new SecurityTokenDescriptor

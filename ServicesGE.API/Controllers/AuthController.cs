@@ -50,7 +50,7 @@ namespace ServicesGE.API.Controllers
                 return Unauthorized("Email ou senha inválidos.");
             }
 
-            var token = TokenService.GenerateToken(usuario.nome, usuario.permissao, _configuration);
+            var token = TokenService.GenerateToken(usuario.nome, usuario.permissao, usuario.email, _configuration);
 
             return Ok(new
             {

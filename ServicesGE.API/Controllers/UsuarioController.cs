@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -21,6 +22,40 @@ namespace ServicesGE.API.Controllers
         {
             _context = context;
         }
+
+
+        // GET: api/Usuario/GetMe
+       [HttpGet("GetMe")]
+[Authorize]
+public async Task<ActionResult<Usuario>> GetMe()
+{
+    // Obtém o email do usuário do token JWT
+    var userEmail = User.FindFirst(ClaimTypes.Name)?.Value;
+
+    if (string.IsNullOrEmpty(userEmail))
+    {
+        return Unauthorized("Token inválido ou não autorizado.");
+    }
+
+    // Busca os dados do usuário com base no email do token
+    var usuario = await _context.usuarios
+        .FirstOrDefaultAsync(u => u.email == userEmail);
+
+    if (usuario == null)
+    {
+        return NotFound("Usuário não encontrado.");
+    }
+
+    // Retorna os dados do usuário autenticado
+    return Ok(new
+    {
+        usuario.usuarioId,
+        usuario.nome,
+        usuario.email,
+        usuario.permissao
+    });
+}
+
 
         // GET: api/Usuario
         [HttpGet("GetAll")]
