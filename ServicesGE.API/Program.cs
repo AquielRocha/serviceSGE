@@ -7,12 +7,17 @@ using ServicesGE.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Adiciona o serviço de controllers
-builder.Services.AddControllers();
-
 // Configura o DbContext com a string de conexão do appsettings.json
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Configuração do JSON Serializer para evitar ciclos de referência
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles; // Ignora ciclos de referência
+        options.JsonSerializerOptions.WriteIndented = true; // Formatação legível para depuração
+    });
 
 // Configuração da Autenticação JWT
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -76,6 +81,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// Configuração de logging
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
